@@ -150,7 +150,7 @@
             padding: 10px;
             font-size: 16px;
             border: 2px solid #ccc;
-            border-radius: 4px;
+            border-radius: 20px; /* Cambiar a borde redondeado */
             outline: none;
             transition: border-color 0.3s;
         }
@@ -304,6 +304,7 @@
     <div class="vignette"></div>
 
     <script>
+
         const quotes = [
             "La vida es lo que hacemos de ella.",
             "El amor es la respuesta, no importa la pregunta.",
@@ -330,21 +331,28 @@
             "Cree que puedes y ya estarás a mitad de camino."
         ];
 
+
         const vignette = document.querySelector('.vignette');
         let currentColor = document.getElementById('vignetteColor').value;
 
         // Mostrar una frase aleatoria
         document.getElementById('quoteDisplay').innerText = quotes[Math.floor(Math.random() * quotes.length)];
 
-        // Restaurar configuración del Vignette
+        // Restaurar configuración del Vignette al cargar la página
         const savedColor = localStorage.getItem('vignetteColor');
-        const savedIntensity = localStorage.getItem('vignetteIntensity') || 0.5;
+        const savedIntensity = localStorage.getItem('vignetteIntensity') || 0.7;
+        const savedBgColor = localStorage.getItem('bgcolor') || '#ffcccb';
+
         if (savedColor) {
             document.getElementById('vignetteColor').value = savedColor;
-            document.getElementById('vignetteIntensity').value = savedIntensity;
-            updateVignette();
+            currentColor = savedColor;
         }
+        document.getElementById('vignetteIntensity').value = savedIntensity;
+        document.getElementById('bgcolor').value = savedBgColor;
+        document.body.style.backgroundColor = savedBgColor;
+        updateVignette();
 
+        // Event listeners para guardar las preferencias en localStorage
         document.getElementById('vignetteColor').addEventListener('input', function() {
             currentColor = this.value;
             updateVignette();
@@ -358,7 +366,9 @@
         });
 
         document.getElementById('bgcolor').addEventListener('input', function() {
-            document.body.style.backgroundColor = this.value;
+            const bgcolor = this.value;
+            document.body.style.backgroundColor = bgcolor;
+            localStorage.setItem('bgcolor', bgcolor);
         });
 
         function updateVignette() {
