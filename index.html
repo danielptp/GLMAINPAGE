@@ -141,6 +141,14 @@
 
         .search-bar {
             margin: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 500px;
+            background-color: white;
+            border-radius: 30px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
 
         .search-bar input[type="text"] {
@@ -149,26 +157,33 @@
             height: 40px;
             padding: 10px;
             font-size: 16px;
-            border: 2px solid #ccc;
-            border-radius: 4px;
+            border: none;
+            border-radius: 30px;
             outline: none;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
+            box-shadow: none;
         }
 
         .search-bar input[type="text"]:focus {
-            border-color: #ff6347;
+            border-color: transparent;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
 
         .search-bar button {
-            height: 42px;
+            height: 40px;
             padding: 0 20px;
             font-size: 16px;
             border: none;
-            border-radius: 4px;
+            border-radius: 30px;
             background-color: #ff6347;
             color: white;
             cursor: pointer;
             margin-left: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .search-bar button:hover {
+            background-color: #ff4500;
         }
 
         .favorites {
@@ -216,17 +231,17 @@
         }
 
         /* Estilos para el selector de color en el menú */
-        .color-selector, .intensity-selector {
+        .color-selector, .intensity-selector, .background-selector {
             margin: 20px;
             display: flex;
             flex-direction: column;
         }
 
-        .color-selector label, .intensity-selector label {
+        .color-selector label, .intensity-selector label, .background-selector label {
             margin-bottom: 10px;
         }
 
-        .color-selector input[type="color"], .intensity-selector input[type="range"] {
+        .color-selector input[type="color"], .intensity-selector input[type="range"], .background-selector input[type="color"] {
             width: 100%;
             height: 40px;
             border: none;
@@ -275,60 +290,62 @@
         </div>
         <div class="intensity-selector">
             <label for="vignetteIntensity">Intensidad del Vignette:</label>
-            <input type="range" id="vignetteIntensity" name="vignetteIntensity" min="0.5" max="2" step="0.01" value="1">
+            <input type="range" id="vignetteIntensity" name="vignetteIntensity" min="0.5" max="2" step="0.1" value="1">
+        </div>
+        <div class="background-selector">
+            <label for="backgroundColor">Selecciona el color de fondo:</label>
+            <input type="color" id="backgroundColor" name="backgroundColor" value="#ffcccb">
         </div>
     </div>
 
-    <div class="logo">
-        <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png" alt="Google Logo">
-    </div>
+    <img src="logo.png" alt="Logo" class="logo">
 
     <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Buscar en Google...">
-        <button onclick="searchGoogle()">Buscar</button>
+        <input type="text" id="searchQuery" placeholder="Buscar en Google...">
+        <button onclick="search()">Buscar</button>
     </div>
 
     <div class="favorites">
-        <a href="https://www.youtube.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/youtube-play.png" alt="YouTube">YouTube</a>
-        <a href="https://www.facebook.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/facebook.png" alt="Facebook">Facebook</a>
-        <a href="https://www.gmail.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/gmail-new.png" alt="Gmail">Gmail</a>
-        <a href="https://www.instagram.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/instagram-new.png" alt="Instagram">Instagram</a>
+        <a href="https://www.google.com" target="_blank">
+            <img src="google.png" alt="Google">
+            Google
+        </a>
+        <a href="https://www.youtube.com" target="_blank">
+            <img src="youtube.png" alt="YouTube">
+            YouTube
+        </a>
+        <a href="https://www.facebook.com" target="_blank">
+            <img src="facebook.png" alt="Facebook">
+            Facebook
+        </a>
+        <a href="https://www.instagram.com" target="_blank">
+            <img src="instagram.png" alt="Instagram">
+            Instagram
+        </a>
     </div>
 
     <div class="quote" id="quote"></div>
 
-    <div id="vignette" class="vignette"></div>
+    <div class="vignette" id="vignette"></div>
 
     <script>
-        function toggleMenu() {
-            const menu = document.getElementById('menu');
-            if (menu.classList.contains('open-menu')) {
-                menu.classList.remove('open-menu');
-            } else {
-                menu.classList.add('open-menu');
-            }
+        const toggleMenu = () => {
+            const menu = document.getElementById("menu");
+            menu.classList.toggle("open-menu");
         }
 
-        document.getElementById('vignetteColor').addEventListener('input', function () {
-            updateVignette();
-            localStorage.setItem('vignetteColor', this.value);
+        document.getElementById("vignetteColor").addEventListener("input", function() {
+            document.getElementById("vignette").style.background = `radial-gradient(circle, transparent, ${this.value} 70%, ${this.value})`;
         });
 
-        document.getElementById('vignetteIntensity').addEventListener('input', function () {
-            updateVignette();
-            localStorage.setItem('vignetteIntensity', this.value);
+        document.getElementById("vignetteIntensity").addEventListener("input", function() {
+            const opacity = this.value;
+            document.getElementById("vignette").style.opacity = opacity;
         });
 
-        function updateVignette() {
-            const color = document.getElementById('vignetteColor').value;
-            const intensity = document.getElementById('vignetteIntensity').value;
-            document.getElementById('vignette').style.background = `radial-gradient(circle, transparent, ${color} ${intensity * 70}%, ${color})`;
-        }
-
-        function searchGoogle() {
-            const query = document.getElementById('searchInput').value;
-            window.location.href = `https://www.google.com/search?q=${query}`;
-        }
+        document.getElementById("backgroundColor").addEventListener("input", function() {
+            document.body.style.backgroundColor = this.value;
+        });
 
         const quotes = [
             "La vida es lo que hacemos de ella.",
@@ -356,17 +373,15 @@
             "Cree que puedes y ya estarás a mitad de camino."
         ];
 
-        document.getElementById('quote').innerText = quotes[Math.floor(Math.random() * quotes.length)];
+        document.getElementById("quote").textContent = quotes[Math.floor(Math.random() * quotes.length)];
 
-        // Restaurar configuración del Vignette
-        const savedColor = localStorage.getItem('vignetteColor');
-        const savedIntensity = localStorage.getItem('vignetteIntensity') || 0.5;
-        if (savedColor) {
-            document.getElementById('vignetteColor').value = savedColor;
-            document.getElementById('vignetteIntensity').value = savedIntensity;
-            updateVignette();
+        const search = () => {
+            const query = document.getElementById("searchQuery").value;
+            window.open(`https://www.google.com/search?q=${query}`, "_blank");
         }
     </script>
 </body>
 </html>
-        
+
+
+
