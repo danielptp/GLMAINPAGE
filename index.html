@@ -144,7 +144,8 @@
         }
 
         .search-bar input[type="text"] {
-            width: 300px;
+            width: 100%;
+            max-width: 300px;
             height: 40px;
             padding: 10px;
             font-size: 16px;
@@ -172,23 +173,28 @@
 
         .favorites {
             display: flex;
-            justify-content: center;
-            margin: 20px;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            width: 100%;
+            max-width: 500px;
+            margin: 20px 0;
         }
 
         .favorites a {
-            margin: 0 10px;
+            margin: 10px;
             text-decoration: none;
             color: #ff6347;
             font-size: 20px;
             display: flex;
+            flex-direction: column;
             align-items: center;
+            text-align: center;
         }
 
         .favorites img {
-            margin-right: 8px;
-            width: 24px;
-            height: 24px;
+            margin-bottom: 8px;
+            width: 32px;
+            height: 32px;
         }
 
         .quote {
@@ -225,6 +231,23 @@
             height: 40px;
             border: none;
             cursor: pointer;
+        }
+
+        /* Estilos para asegurar la responsividad en dispositivos móviles */
+        @media screen and (max-width: 600px) {
+            .search-bar input[type="text"] {
+                width: 80%;
+            }
+
+            .favorites a {
+                font-size: 16px;
+                margin: 5px;
+            }
+
+            .favorites img {
+                width: 28px;
+                height: 28px;
+            }
         }
     </style>
 </head>
@@ -264,21 +287,27 @@
     <div class="favorites">
         <a href="https://www.youtube.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/youtube-play.png" alt="YouTube">YouTube</a>
         <a href="https://www.facebook.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/facebook.png" alt="Facebook">Facebook</a>
-        <a href="https://mail.google.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/gmail.png" alt="Gmail">Gmail</a>
-        <a href="https://www.instagram.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/instagram-new.png" alt="Instagram">Instagram</a>
+        <a href="https://mail.google.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/gmail-new.png" alt="Gmail">Gmail</a>
+        <a href="https://www.linkedin.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/linkedin.png" alt="LinkedIn">LinkedIn</a>
     </div>
 
     <div class="quote" id="quote"></div>
-    <div class="vignette" id="vignette"></div>
+
+    <div id="vignette" class="vignette"></div>
 
     <script>
         function toggleMenu() {
-            const menu = document.getElementById("menu");
-            menu.classList.toggle("open-menu");
+            const menu = document.getElementById('menu');
+            if (menu.classList.contains('open-menu')) {
+                menu.classList.remove('open-menu');
+            } else {
+                menu.classList.add('open-menu');
+            }
         }
 
         document.getElementById('vignetteColor').addEventListener('input', function () {
             document.getElementById('vignette').style.background = `radial-gradient(circle, transparent, ${this.value} 70%, ${this.value})`;
+            localStorage.setItem('vignetteColor', this.value);
         });
 
         function searchGoogle() {
@@ -287,33 +316,21 @@
         }
 
         const quotes = [
-        "La vida es lo que hacemos de ella.",
-            "El amor es la respuesta, no importa la pregunta.",
-            "Haz lo que amas, ama lo que haces.",
-            "La felicidad no es un destino, es una forma de viajar.",
-            "Cada día es una segunda oportunidad.",
-            "Nunca es tarde para ser lo que podrías haber sido.",
-            "La vida es corta, sonríele a quien llora, ignora a quien te critica y sé feliz con quien te importa.",
-            "La única forma de hacer un gran trabajo es amar lo que haces.",
-            "Todo es posible si tienes la suficiente voluntad.",
-            "El éxito es la suma de pequeños esfuerzos repetidos día tras día.",
-            "No cuentes los días, haz que los días cuenten.",
-            "No importa cuántas veces caigas, lo importante es cuántas veces te levantas.",
-            "El éxito es donde la preparación y la oportunidad se encuentran.",
-            "El futuro depende de lo que hagas hoy.",
-            "La motivación es lo que te pone en marcha. El hábito es lo que hace que sigas.",
-            "La única manera de hacer un gran trabajo es amar lo que haces.",
-            "La diferencia entre lo ordinario y lo extraordinario es ese pequeño extra.",
-            "El mejor día de tu vida es aquel en el que decides que tu vida es tuya. Sin disculpas ni excusas. Nadie para apoyarte, confiar o culpar. Ese es el verdadero inicio. Un viaje hacia lo que eres realmente capaz de hacer. Este es el día en que tu vida realmente comienza.",
-            "El éxito no está en lo que tienes, sino en quién eres.",
-            "Lo que consigas en la vida no es tan importante como en quién te conviertas.",
-            "Cada día es una nueva oportunidad para cambiar tu vida.",
-            "La mejor manera de predecir el futuro es crearlo.",
-            "Cree que puedes y ya estarás a mitad de camino."
+            "La vida es como una bicicleta. Para mantener el equilibrio, debes seguir adelante. - Albert Einstein",
+            "El éxito es la suma de pequeños esfuerzos repetidos día tras día. - Robert Collier",
+            "No cuentes los días, haz que los días cuenten. - Muhammad Ali",
+            "El único lugar donde el éxito viene antes del trabajo es en el diccionario. - Vidal Sassoon",
+            "La mejor manera de predecir el futuro es inventarlo. - Alan Kay"
         ];
 
         document.getElementById('quote').innerText = quotes[Math.floor(Math.random() * quotes.length)];
+
+        // Restaurar color del vignette
+        const savedColor = localStorage.getItem('vignetteColor');
+        if (savedColor) {
+            document.getElementById('vignette').style.background = `radial-gradient(circle, transparent, ${savedColor} 70%, ${savedColor})`;
+            document.getElementById('vignetteColor').value = savedColor;
+        }
     </script>
 </body>
 </html>
-     
