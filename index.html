@@ -216,17 +216,17 @@
         }
 
         /* Estilos para el selector de color en el menú */
-        .color-selector {
+        .color-selector, .intensity-selector {
             margin: 20px;
             display: flex;
             flex-direction: column;
         }
 
-        .color-selector label {
+        .color-selector label, .intensity-selector label {
             margin-bottom: 10px;
         }
 
-        .color-selector input[type="color"] {
+        .color-selector input[type="color"], .intensity-selector input[type="range"] {
             width: 100%;
             height: 40px;
             border: none;
@@ -273,6 +273,10 @@
             <label for="vignetteColor">Selecciona el color del Vignette:</label>
             <input type="color" id="vignetteColor" name="vignetteColor">
         </div>
+        <div class="intensity-selector">
+            <label for="vignetteIntensity">Intensidad del Vignette:</label>
+            <input type="range" id="vignetteIntensity" name="vignetteIntensity" min="0.1" max="1" step="0.1" value="0.5">
+        </div>
     </div>
 
     <div class="logo">
@@ -286,8 +290,8 @@
 
     <div class="favorites">
         <a href="https://www.youtube.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/youtube-play.png" alt="YouTube">YouTube</a>
-        <a href="https://www.facebook.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/facebook.png" alt="Facebook">Facebook</a>
-        <a href="https://mail.google.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/gmail-new.png" alt="Gmail">Gmail</a>
+        <a href="https://www.github.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/github.png" alt="GitHub">GitHub</a>
+        <a href="https://www.gmail.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/gmail-new.png" alt="Gmail">Gmail</a>
         <a href="https://www.linkedin.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/linkedin.png" alt="LinkedIn">LinkedIn</a>
     </div>
 
@@ -306,9 +310,20 @@
         }
 
         document.getElementById('vignetteColor').addEventListener('input', function () {
-            document.getElementById('vignette').style.background = `radial-gradient(circle, transparent, ${this.value} 70%, ${this.value})`;
+            updateVignette();
             localStorage.setItem('vignetteColor', this.value);
         });
+
+        document.getElementById('vignetteIntensity').addEventListener('input', function () {
+            updateVignette();
+            localStorage.setItem('vignetteIntensity', this.value);
+        });
+
+        function updateVignette() {
+            const color = document.getElementById('vignetteColor').value;
+            const intensity = document.getElementById('vignetteIntensity').value;
+            document.getElementById('vignette').style.background = `radial-gradient(circle, transparent, ${color} ${intensity * 70}%, ${color})`;
+        }
 
         function searchGoogle() {
             const query = document.getElementById('searchInput').value;
@@ -316,7 +331,7 @@
         }
 
         const quotes = [
-        "La vida es lo que hacemos de ella.",
+            "La vida es lo que hacemos de ella.",
             "El amor es la respuesta, no importa la pregunta.",
             "Haz lo que amas, ama lo que haces.",
             "La felicidad no es un destino, es una forma de viajar.",
@@ -343,12 +358,15 @@
 
         document.getElementById('quote').innerText = quotes[Math.floor(Math.random() * quotes.length)];
 
-        // Restaurar color del vignette
+        // Restaurar configuración del Vignette
         const savedColor = localStorage.getItem('vignetteColor');
+        const savedIntensity = localStorage.getItem('vignetteIntensity') || 0.5;
         if (savedColor) {
-            document.getElementById('vignette').style.background = `radial-gradient(circle, transparent, ${savedColor} 70%, ${savedColor})`;
             document.getElementById('vignetteColor').value = savedColor;
+            document.getElementById('vignetteIntensity').value = savedIntensity;
+            updateVignette();
         }
     </script>
 </body>
 </html>
+        
