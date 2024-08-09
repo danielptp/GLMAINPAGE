@@ -20,188 +20,41 @@
             position: relative;
         }
 
-        .menu-btn {
-            position: fixed;
-            left: 0;
-            top: 20px;
-            margin-left: 10px;
-            z-index: 10;
-            background-color: #ff6347;
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
-        .menu {
-            position: fixed;
-            left: -250px; /* Mover el menú fuera de la pantalla */
-            top: 0;
-            width: 250px;
-            height: 100%;
-            background-color: #333;
-            color: white;
-            overflow-x: hidden;
-            transition: 0.5s;
-            padding-top: 60px;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.5); /* Añadir sombra para eliminar la línea gris */
-            z-index: 9;
-        }
-
-        .menu a {
-            padding: 10px 15px;
-            text-decoration: none;
-            font-size: 18px;
-            color: white;
-            display: block;
-            transition: 0.3s;
-        }
-
-        .menu a:hover {
-            background-color: #575757;
-        }
-
-        .menu .close-btn {
-            position: absolute;
-            top: 20px;
-            right: 25px;
-            font-size: 36px;
-            cursor: pointer;
-        }
-
-        .open-menu {
-            left: 0; /* Mostrar el menú */
-        }
-
-        .hearts {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            top: 0;
-            left: 0;
-            z-index: -1;
-        }
-
-        .hearts div {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: #ff6347;
-            transform: rotate(45deg);
-            animation: float 6s infinite, move 20s linear infinite;
-            opacity: 0.7;
-        }
-
-        .hearts div:before,
-        .hearts div:after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            background: #ff6347;
-            border-radius: 50%;
-        }
-
-        .hearts div:before {
-            top: -10px;
-            left: 0;
-        }
-
-        .hearts div:after {
-            top: 0;
-            left: -10px;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-20px);
-            }
-            100% {
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes move {
-            0% {
-                transform: translateY(100vh) translateX(-50vw);
-            }
-            100% {
-                transform: translateY(-100vh) translateX(50vw);
-            }
-        }
-
-        .logo {
-            margin-top: 20px;
-        }
-
-        .search-bar {
-            margin: 20px;
-        }
-
         .search-bar input[type="text"] {
-            width: 100%;
-            max-width: 300px;
-            height: 40px;
+            width: 300px;
             padding: 10px;
-            font-size: 16px;
-            border: 2px solid #ccc;
+            font-size: 18px;
+            border: 1px solid #ccc;
             border-radius: 4px;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-        .search-bar input[type="text"]:focus {
-            border-color: #ff6347;
-        }
-
-        .search-bar button {
-            height: 42px;
-            padding: 0 20px;
-            font-size: 16px;
-            border: none;
-            border-radius: 4px;
-            background-color: #ff6347;
-            color: white;
-            cursor: pointer;
-            margin-left: 10px;
         }
 
         .favorites {
+            margin-top: 20px;
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
             flex-wrap: wrap;
-            width: 100%;
-            max-width: 500px;
-            margin: 20px 0;
         }
 
         .favorites a {
-            margin: 10px;
-            text-decoration: none;
-            color: #ff6347;
-            font-size: 20px;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            text-align: center;
-        }
-
-        .favorites img {
-            margin-bottom: 8px;
-            width: 32px;
-            height: 32px;
+            justify-content: center;
+            margin: 10px;
+            font-size: 18px;
+            color: #333;
+            text-decoration: none;
+            padding: 5px;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .quote {
-            font-size: 24px;
             margin-top: 40px;
-            font-weight: bold;
-            color: #333;
+            font-size: 30px;
+            color: #555;
         }
 
         .vignette {
@@ -211,72 +64,80 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            background: radial-gradient(circle, transparent, rgba(255, 105, 180, 0.5) 70%, rgba(255, 20, 147, 1));
+            background: radial-gradient(circle, transparent, rgba(255, 105, 180, 0.25) 70%, rgba(255, 20, 147, 0.5));
             z-index: 0;
+            transition: background 0.3s ease-in-out;
         }
 
-        /* Estilos para el selector de color en el menú */
-        .color-selector, .intensity-selector {
-            margin: 20px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .color-selector label, .intensity-selector label {
-            margin-bottom: 10px;
-        }
-
-        .color-selector input[type="color"], .intensity-selector input[type="range"] {
-            width: 100%;
-            height: 40px;
-            border: none;
+        /* Styles for the menu */
+        .menu-toggle {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
             cursor: pointer;
+            font-size: 24px;
         }
 
-        /* Estilos para asegurar la responsividad en dispositivos móviles */
-        @media screen and (max-width: 600px) {
-            .search-bar input[type="text"] {
-                width: 80%;
-            }
+        .menu {
+            position: fixed;
+            left: -250px;
+            top: 0;
+            width: 250px;
+            height: 100%;
+            background-color: #ff6347;
+            color: white;
+            z-index: 99;
+            transition: left 0.3s ease;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+        }
 
+        .menu.active {
+            left: 0;
+        }
+
+        .menu h2 {
+            margin-top: 0;
+            font-size: 24px;
+        }
+
+        .menu label {
+            margin-top: 20px;
+            display: block;
+            font-size: 18px;
+        }
+
+        .menu input[type="color"] {
+            width: 100%;
+            padding: 5px;
+            border: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .menu input[type="range"] {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
             .favorites a {
+                width: 50px;
+                height: 50px;
                 font-size: 16px;
-                margin: 5px;
-            }
-
-            .favorites img {
-                width: 28px;
-                height: 28px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="hearts">
-        <div style="top: 10%; left: 20%; animation-duration: 10s;"></div>
-        <div style="top: 30%; left: 50%; animation-duration: 12s;"></div>
-        <div style="top: 50%; left: 70%; animation-duration: 8s;"></div>
-        <div style="top: 70%; left: 30%; animation-duration: 14s;"></div>
-        <div style="top: 90%; left: 80%; animation-duration: 10s;"></div>
-        <div style="top: 15%; left: 25%; animation-duration: 16s;"></div>
-        <div style="top: 40%; left: 60%; animation-duration: 18s;"></div>
-        <div style="top: 60%; left: 75%; animation-duration: 9s;"></div>
-        <div style="top: 80%; left: 40%; animation-duration: 13s;"></div>
-        <div style="top: 95%; left: 20%; animation-duration: 11s;"></div>
-    </div>
-
-    <button class="menu-btn" onclick="toggleMenu()">≡</button>
-
-    <div id="menu" class="menu">
-        <a href="javascript:void(0)" class="close-btn" onclick="toggleMenu()">×</a>
-        <div class="color-selector">
-            <label for="vignetteColor">Selecciona el color del Vignette:</label>
-            <input type="color" id="vignetteColor" name="vignetteColor">
-        </div>
-        <div class="intensity-selector">
-            <label for="vignetteIntensity">Intensidad del Vignette:</label>
-            <input type="range" id="vignetteIntensity" name="vignetteIntensity" min="0.1" max="1" step="0.1" value="0.5">
-        </div>
+    <div class="menu-toggle" onclick="toggleMenu()">&#9776;</div>
+    <div class="menu" id="sideMenu">
+        <h2>Opciones</h2>
+        <label for="vignetteColor">Color de Vignette:</label>
+        <input type="color" id="vignetteColor" value="#ff69b4" onchange="updateVignetteColor()">
+        <label for="vignetteIntensity">Intensidad de Vignette:</label>
+        <input type="range" id="vignetteIntensity" min="0" max="1" step="0.01" value="0.25" onchange="updateVignetteIntensity()">
     </div>
 
     <div class="logo">
@@ -290,48 +151,49 @@
 
     <div class="favorites">
         <a href="https://www.youtube.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/youtube-play.png" alt="YouTube">YouTube</a>
-        <a href="https://www.github.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/github.png" alt="GitHub">GitHub</a>
-        <a href="https://www.gmail.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/gmail-new.png" alt="Gmail">Gmail</a>
-        <a href="https://www.linkedin.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/linkedin.png" alt="LinkedIn">LinkedIn</a>
+        <a href="https://www.facebook.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/facebook.png" alt="Facebook">Facebook</a>
+        <a href="https://mail.google.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/gmail.png" alt="Gmail">Gmail</a>
+        <a href="https://www.instagram.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/instagram-new.png" alt="Instagram">Instagram</a>
     </div>
 
     <div class="quote" id="quote"></div>
-
-    <div id="vignette" class="vignette"></div>
+    <div class="vignette" id="vignette"></div>
 
     <script>
         function toggleMenu() {
-            const menu = document.getElementById('menu');
-            if (menu.classList.contains('open-menu')) {
-                menu.classList.remove('open-menu');
-            } else {
-                menu.classList.add('open-menu');
-            }
+            const menu = document.getElementById('sideMenu');
+            menu.classList.toggle('active');
         }
 
-        document.getElementById('vignetteColor').addEventListener('input', function () {
-            updateVignette();
-            localStorage.setItem('vignetteColor', this.value);
-        });
+        function searchGoogle() {
+            var query = document.getElementById('searchInput').value;
+            window.location.href = 'https://www.google.com/search?q=' + query;
+        }
 
-        document.getElementById('vignetteIntensity').addEventListener('input', function () {
+        function updateVignetteColor() {
+            const color = document.getElementById('vignetteColor').value;
             updateVignette();
-            localStorage.setItem('vignetteIntensity', this.value);
-        });
+        }
+
+        function updateVignetteIntensity() {
+            updateVignette();
+        }
 
         function updateVignette() {
             const color = document.getElementById('vignetteColor').value;
             const intensity = document.getElementById('vignetteIntensity').value;
-            document.getElementById('vignette').style.background = `radial-gradient(circle, transparent, ${color} ${intensity * 70}%, ${color})`;
+            document.getElementById('vignette').style.background = `radial-gradient(circle, transparent, ${hexToRgba(color, intensity)} 70%, ${hexToRgba(color, intensity * 2)})`;
         }
 
-        function searchGoogle() {
-            const query = document.getElementById('searchInput').value;
-            window.location.href = `https://www.google.com/search?q=${query}`;
+        function hexToRgba(hex, alpha) {
+            let r = parseInt(hex.slice(1, 3), 16),
+                g = parseInt(hex.slice(3, 5), 16),
+                b = parseInt(hex.slice(5, 7), 16);
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
         }
 
         const quotes = [
-            "La vida es lo que hacemos de ella.",
+"La vida es lo que hacemos de ella.",
             "El amor es la respuesta, no importa la pregunta.",
             "Haz lo que amas, ama lo que haces.",
             "La felicidad no es un destino, es una forma de viajar.",
