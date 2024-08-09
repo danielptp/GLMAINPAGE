@@ -139,6 +139,65 @@
             margin-top: 20px;
         }
 
+        .search-bar {
+            margin: 20px;
+        }
+
+        .search-bar input[type="text"] {
+            width: 300px;
+            height: 40px;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-bar input[type="text"]:focus {
+            border-color: #ff6347;
+        }
+
+        .search-bar button {
+            height: 42px;
+            padding: 0 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: #ff6347;
+            color: white;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .favorites {
+            display: flex;
+            justify-content: center;
+            margin: 20px;
+        }
+
+        .favorites a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: #ff6347;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .favorites img {
+            margin-right: 8px;
+            width: 24px;
+            height: 24px;
+        }
+
+        .quote {
+            font-size: 24px;
+            margin-top: 40px;
+            font-weight: bold;
+            color: #333;
+        }
+
         .vignette {
             position: absolute;
             top: 0;
@@ -203,10 +262,10 @@
     </div>
 
     <div class="favorites">
-        <a href="https://www.youtube.com" target="_blank">YouTube</a>
-        <a href="https://www.facebook.com" target="_blank">Facebook</a>
-        <a href="https://mail.google.com" target="_blank">Gmail</a>
-        <a href="https://www.instagram.com" target="_blank">Instagram</a>
+        <a href="https://www.youtube.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/youtube-play.png" alt="YouTube">YouTube</a>
+        <a href="https://www.facebook.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/facebook.png" alt="Facebook">Facebook</a>
+        <a href="https://mail.google.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/gmail.png" alt="Gmail">Gmail</a>
+        <a href="https://www.instagram.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/instagram-new.png" alt="Instagram">Instagram</a>
     </div>
 
     <div class="quote" id="quote"></div>
@@ -218,9 +277,13 @@
             menu.classList.toggle("open-menu");
         }
 
+        document.getElementById('vignetteColor').addEventListener('input', function () {
+            document.getElementById('vignette').style.background = `radial-gradient(circle, transparent, ${this.value} 70%, ${this.value})`;
+        });
+
         function searchGoogle() {
-            var query = document.getElementById('searchInput').value;
-            window.location.href = 'https://www.google.com/search?q=' + query;
+            const query = document.getElementById('searchInput').value;
+            window.location.href = `https://www.google.com/search?q=${query}`;
         }
 
         const quotes = [
@@ -249,31 +312,8 @@
             "Cree que puedes y ya estarás a mitad de camino."
         ];
 
-        function getDailyQuote() {
-            const today = new Date();
-            const quoteIndex = today.getDate() % quotes.length;
-            document.getElementById('quote').innerText = quotes[quoteIndex];
-        }
-
-        // Almacenar el color en cookies y aplicarlo
-        document.getElementById('vignetteColor').addEventListener('input', function () {
-            const color = this.value;
-            document.getElementById('vignette').style.background = `radial-gradient(circle, transparent, ${color} 70%, ${color})`;
-            document.cookie = `vignetteColor=${color}; path=/`;
-        });
-
-        // Aplicar el color guardado de las cookies
-        window.onload = function () {
-            getDailyQuote();
-
-            const cookies = document.cookie.split('; ');
-            const vignetteCookie = cookies.find(row => row.startsWith('vignetteColor='));
-            if (vignetteCookie) {
-                const color = vignetteCookie.split('=')[1];
-                document.getElementById('vignette').style.background = `radial-gradient(circle, transparent, ${color} 70%, ${color})`;
-                document.getElementById('vignetteColor').value = color;
-            }
-        };
+        document.getElementById('quote').innerText = quotes[Math.floor(Math.random() * quotes.length)];
     </script>
 </body>
 </html>
+     
