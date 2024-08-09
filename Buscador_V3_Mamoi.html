@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Página Principal</title>
+    <style>
+        body {
+            background-color: #ffcccb; /* Rosa claro */
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+        .search-bar {
+            margin: 20px 0;
+        }
+        .search-bar input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .search-bar button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #ff6347;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .favorites {
+            margin-top: 20px;
+        }
+        .favorites a {
+            display: inline-block;
+            margin: 10px;
+            font-size: 18px;
+            color: #333;
+            text-decoration: none;
+        }
+        .quote {
+            margin-top: 20px;
+            font-size: 24px;
+            color: #555;
+        }
+        .hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+        .hearts div {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff6347;
+            transform: rotate(45deg);
+            animation: float 6s infinite, move 20s linear infinite;
+            opacity: 0.7;
+        }
+        .hearts div:before,
+        .hearts div:after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff6347;
+            border-radius: 50%;
+        }
+        .hearts div:before {
+            top: -10px;
+            left: 0;
+        }
+        .hearts div:after {
+            top: 0;
+            left: -10px;
+        }
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+        @keyframes move {
+            0% {
+                transform: translateY(100vh) translateX(-50vw);
+            }
+            100% {
+                transform: translateY(-100vh) translateX(50vw);
+            }
+        }
+        .logo {
+            margin-top: 20px;
+        }
+        .vignette {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: radial-gradient(circle, transparent, rgba(255, 105, 180, 0.5) 70%, rgba(255, 20, 147, 1));
+            z-index: 0;
+        }
+        .dropdown-menu {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            transition: left 0.3s ease;
+            z-index: 100;
+        }
+        .dropdown-menu.show {
+            left: 0;
+        }
+        .dropdown-menu label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .menu-toggle {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 101;
+            cursor: pointer;
+            font-size: 24px;
+            color: white;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+</head>
+<body>
+    <div class="menu-toggle" onclick="toggleMenu()">
+        <i class="fas fa-bars"></i>
+    </div>
+    <div class="dropdown-menu" id="dropdownMenu">
+        <label for="vignetteColor">Selecciona el color de vignette:</label>
+        <input type="color" id="vignetteColor" name="vignetteColor" value="#ff69b4" />
+    </div>
+
+    <div class="hearts">
+        <div style="top: 10%; left: 20%; animation-duration: 10s;"></div>
+        <div style="top: 30%; left: 50%; animation-duration: 12s;"></div>
+        <div style="top: 50%; left: 70%; animation-duration: 8s;"></div>
+        <div style="top: 70%; left: 30%; animation-duration: 14s;"></div>
+        <div style="top: 90%; left: 80%; animation-duration: 10s;"></div>
+        <div style="top: 15%; left: 25%; animation-duration: 16s;"></div>
+        <div style="top: 40%; left: 60%; animation-duration: 18s;"></div>
+        <div style="top: 60%; left: 75%; animation-duration: 9s;"></div>
+        <div style="top: 80%; left: 40%; animation-duration: 13s;"></div>
+        <div style="top: 95%; left: 20%; animation-duration: 11s;"></div>
+    </div>
+
+    <div class="logo">
+        <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png" alt="Google Logo" />
+    </div>
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Buscar en Google..." />
+        <button onclick="searchGoogle()">Buscar</button>
+    </div>
+    <div class="favorites">
+        <a href="https://www.youtube.com" target="_blank">
+            <i class="fab fa-youtube"></i> YouTube
+        </a>
+        <a href="https://www.facebook.com" target="_blank">
+            <i class="fab fa-facebook"></i> Facebook
+        </a>
+        <a href="https://www.gmail.com" target="_blank">
+            <i class="fas fa-envelope"></i> Gmail
+        </a>
+        <a href="https://www.instagram.com" target="_blank">
+            <i class="fab fa-instagram"></i> Instagram
+        </a>
+    </div>
+    <div class="quote" id="quote"></div>
+    <div class="vignette" id="vignette"></div>
+
+    <script>
+        function searchGoogle() {
+            var query = document.getElementById('searchInput').value;
+            window.location.href = 'https://www.google.com/search?q=' + query;
+        }
+
+        const quotes = [
+        "La vida es lo que hacemos de ella.",
+            "El amor es la respuesta, no importa la pregunta.",
+            "Haz lo que amas, ama lo que haces.",
+            "La felicidad no es un destino, es una forma de viajar.",
+            "Cada día es una segunda oportunidad.",
+            "Nunca es tarde para ser lo que podrías haber sido.",
+            "La vida es corta, sonríele a quien llora, ignora a quien te critica y sé feliz con quien te importa.",
+            "La única forma de hacer un gran trabajo es amar lo que haces.",
+            "Todo es posible si tienes la suficiente voluntad.",
+            "El éxito es la suma de pequeños esfuerzos repetidos día tras día.",
+            "No cuentes los días, haz que los días cuenten.",
+            "No importa cuántas veces caigas, lo importante es cuántas veces te levantas.",
+            "El éxito es donde la preparación y la oportunidad se encuentran.",
+            "El futuro depende de lo que hagas hoy.",
+            "La motivación es lo que te pone en marcha. El hábito es lo que hace que sigas.",
+            "La única manera de hacer un gran trabajo es amar lo que haces.",
+            "La diferencia entre lo ordinario y lo extraordinario es ese pequeño extra.",
+            "El mejor día de tu vida es aquel en el que decides que tu vida es tuya. Sin disculpas ni excusas. Nadie para apoyarte, confiar o culpar. Ese es el verdadero inicio. Un viaje hacia lo que eres realmente capaz de hacer. Este es el día en que tu vida realmente comienza.",
+            "El éxito no está en lo que tienes, sino en quién eres.",
+            "Lo que consigas en la vida no es tan importante como en quién te conviertas.",
+            "Cada día es una nueva oportunidad para cambiar tu vida.",
+            "La mejor manera de predecir el futuro es crearlo.",
+            "Cree que puedes y ya estarás a mitad de camino."
+        ];
+
+        function getDailyQuote() {
+            const today = new Date();
+            const quoteIndex = today.getDate() % quotes.length;
+            document.getElementById('quote').innerText = quotes[quoteIndex];
+        }
+
+        function toggleMenu() {
+            const menu = document.getElementById('dropdownMenu');
+            menu.classList.toggle('show');
+        }
+
+        document.getElementById('vignetteColor').addEventListener('input', function() {
+            const color = this.value;
+            document.getElementById('vignette').style.background = `radial-gradient(circle, transparent, ${color} 70%, ${color})`;
+            document.cookie = `vignetteColor=${color}; path=/`;
+        });
+
+        window.onload = function() {
+            getDailyQuote();
+
+            const colorMatch = document.cookie.match(/vignetteColor=([^;]+)/);
+            if (colorMatch) {
+                const color = colorMatch[1];
+                document.getElementById('vignetteColor').value = color;
+                document.getElementById('vignette').style.background = `radial-gradient(circle, transparent, ${color} 70%, ${color})`;
+            }
+        };
+    </script>
+</body>
+</html>
+
