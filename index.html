@@ -172,6 +172,7 @@
             background-color: #ff6347;
             color: white;
             cursor: pointer;
+            flex: 1; /* Hacer que el botón sea del mismo tamaño que la barra de búsqueda */
         }
 
         .favorites {
@@ -289,174 +290,78 @@
         <a href="javascript:void(0)" class="close-btn" onclick="toggleMenu()">×</a>
         <div class="color-selector">
             <label for="vignetteColor">Selecciona el color del Vignette:</label>
-            <input type="color" id="vignetteColor" name="vignetteColor" value="#ff69b4">
+            <input type="color" id="vignetteColor" value="#ff69b4" onchange="changeVignetteColor()">
         </div>
         <div class="intensity-selector">
-            <label for="vignetteIntensity">Intensidad del Vignette:</label>
-            <input type="range" id="vignetteIntensity" name="vignetteIntensity" min="0.1" max="1" step="0.01" value="0.7">
+            <label for="vignetteIntensity">Selecciona la intensidad del Vignette:</label>
+            <input type="range" id="vignetteIntensity" min="0" max="1" step="0.01" value="0.7" oninput="changeVignetteIntensity()">
         </div>
         <div class="bgcolor-selector">
             <label for="bgcolor">Selecciona el color de fondo:</label>
-            <input type="color" id="bgcolor" name="bgcolor" value="#ffcccb">
+            <input type="color" id="bgcolor" value="#ffcccb" onchange="changeBgColor()">
         </div>
     </div>
-    
-    <div class="logo">
-        <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png" alt="Google Logo">
-    </div>
-    
+
     <div class="search-bar">
-        <input type="text" id="search" placeholder="Busca en Google...">
-        <button onclick="searchGoogle()">Buscar</button>
+        <form onsubmit="return search()">
+            <input type="text" id="search" placeholder="Buscar en Google..." autocomplete="off">
+            <button type="button" onclick="search()">Buscar</button>
+        </form>
     </div>
 
     <div class="favorites">
-        <a href="https://www.youtube.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/youtube-play.png" alt="YouTube">YouTube</a>
-         <a href="https://www.facebook.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/facebook.png" alt="Facebook">Facebook</a>
-         <a href="https://www.gmail.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/gmail-new.png" alt="Gmail">Gmail</a>
-         <a href="https://www.instagram.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/instagram-new.png" alt="Instagram">Instagram</a>
-     </div>
+        <a href="https://www.youtube.com/" target="_blank">
+            <img src="https://img.icons8.com/color/48/000000/youtube-play.png" alt="YouTube">
+            YouTube
+        </a>
+        <a href="https://mail.google.com/" target="_blank">
+            <img src="https://img.icons8.com/color/48/000000/gmail-new.png" alt="Gmail">
+            Gmail
+        </a>
+        <a href="https://www.facebook.com/" target="_blank">
+            <img src="https://img.icons8.com/color/48/000000/facebook-new.png" alt="Facebook">
+            Facebook
+        </a>
+        <a href="https://www.netflix.com/" target="_blank">
+            <img src="https://img.icons8.com/color/48/000000/netflix.png" alt="Netflix">
+            Netflix
+        </a>
+    </div>
 
-    <div class="quote" id="quoteDisplay">Aquí va una frase inspiradora...</div>
+    <div class="quote">
+        "La vida es un 10% lo que nos sucede y un 90% cómo reaccionamos a ello."
+    </div>
 
-    <div class="vignette"></div>
+    <div class="vignette" id="vignette"></div>
 
     <script>
-        const quotes = [
-            "La vida es lo que hacemos de ella.",
-            "El amor es la respuesta, no importa la pregunta.",
-            "Haz lo que amas, ama lo que haces.",
-            "La felicidad no es un destino, es una forma de viajar.",
-            "Cada día es una segunda oportunidad.",
-            "Nunca es tarde para ser lo que podrías haber sido.",
-            "La vida es corta, sonríele a quien llora, ignora a quien te critica y sé feliz con quien te importa.",
-            "La única forma de hacer un gran trabajo es amar lo que haces.",
-            "Todo es posible si tienes la suficiente voluntad.",
-            "El éxito es la suma de pequeños esfuerzos repetidos día tras día.",
-            "No cuentes los días, haz que los días cuenten.",
-            "No importa cuántas veces caigas, lo importante es cuántas veces te levantas.",
-            "El éxito es donde la preparación y la oportunidad se encuentran.",
-            "El futuro depende de lo que hagas hoy.",
-            "La motivación es lo que te pone en marcha. El hábito es lo que hace que sigas.",
-            "La única manera de hacer un gran trabajo es amar lo que haces.",
-            "La diferencia entre lo ordinario y lo extraordinario es ese pequeño extra.",
-            "El mejor día de tu vida es aquel en el que decides que tu vida es tuya. Sin disculpas ni excusas. Nadie para apoyarte, confiar o culpar. Ese es el verdadero inicio. Un viaje hacia lo que eres realmente capaz de hacer. Este es el día en que tu vida realmente comienza.",
-            "El éxito no está en lo que tienes, sino en quién eres.",
-            "Lo que consigas en la vida no es tan importante como en quién te conviertas.",
-            "Cada día es una nueva oportunidad para cambiar tu vida.",
-            "La mejor manera de predecir el futuro es crearlo.",
-            "Cree que puedes y ya estarás a mitad de camino.",
-            "Tu vida es el resultado de tus decisiones y acciones",
-            "El amor lo transforma todo; es la clave de todas las respuestas",
-            "Encuentra pasión en lo que haces y tu vida se llenará de satisfacción",
-            "La verdadera felicidad es un viaje continuo, no una meta final",
-            "Cada nuevo día es una oportunidad para comenzar de nuevo",
-            "Nunca es demasiado tarde para realizar tus sueños más profundos",
-            "La vida es demasiado corta para preocuparse por las críticas; enfócate en aquellos que valoras",
-            "Para lograr un trabajo sobresaliente, primero debes amar lo que haces",
-            "Con determinación y esfuerzo, todo es posible",
-            "El éxito se construye con esfuerzos pequeños y constantes",
-            "No te limites a contar los días; haz que cada día tenga un propósito",
-            "No importa cuántas veces falles, lo crucial es levantarte cada vez",
-            "El éxito surge cuando se encuentran la preparación y la oportunidad",
-            "Lo que haces hoy construye el futuro que deseas",
-            "La motivación te impulsa, pero es el hábito lo que te mantiene en movimiento",
-            "Para alcanzar la excelencia, debes amar y comprometerte con tu trabajo",
-            "El pequeño esfuerzo adicional es lo que marca la diferencia entre lo ordinario y lo extraordinario",
-            "El día en que asumes total responsabilidad por tu vida es el día en que comienza tu verdadero viaje",
-            "El verdadero éxito se mide por la persona en la que te conviertes",
-            "Lo que logres es menos relevante que el crecimiento personal que experimentas",
-            "Cada día te ofrece una nueva oportunidad para transformar tu vida",
-            "La mejor forma de predecir el futuro es diseñarlo tú mismo",
-            "Cree en ti mismo y habrás avanzado la mitad del camino",
-            "La felicidad no es un destino; es una forma de vivir",
-            "Haz de cada día una obra maestra",
-            "Los límites solo existen si los pones tú mismo",
-            "La vida te da lo que tú estás dispuesto a recibir",
-            "Cada momento es una nueva oportunidad para cambiar tu vida",
-            "La clave para el éxito es empezar antes de estar listo",
-            "El cambio comienza con una decisión y un primer paso",
-            "El valor de tus sueños está en tu capacidad de luchar por ellos",
-            "El éxito no es el resultado de la suerte, sino del trabajo constante",
-            "El mayor riesgo es no tomar ninguno",
-            "Cualquier cosa que imagines puede hacerse realidad si trabajas por ella",
-            "La vida es una serie de momentos, y cada momento cuenta",
-            "Nunca subestimes el poder de un pequeño paso en la dirección correcta",
-            "El verdadero fracaso es rendirse sin intentarlo",
-            "El futuro pertenece a quienes creen en la belleza de sus sueños",
-            "No te enfoques en lo que no tienes; aprecia lo que has logrado",
-            "La grandeza no se mide por lo que logras, sino por la persona en la que te conviertes",
-            "Cada desafío es una oportunidad para crecer y aprender",
-            "La perseverancia es el secreto para alcanzar el éxito",
-            "Tu actitud determina tu dirección",
-            "La vida comienza al final de tu zona de confort",
-            "Los sueños no funcionan a menos que tú lo hagas",
-            "El éxito es una suma de pequeños esfuerzos, repetidos día tras día",
-            "La confianza en uno mismo es el primer paso hacia el éxito",
-            "No esperes el momento perfecto; haz que cada momento sea perfecto",
-            "Tu esfuerzo y dedicación son la clave para alcanzar tus metas",
-            "La vida es un viaje, no un destino. Disfruta cada paso del camino"
-        ];
-
-        const vignette = document.querySelector('.vignette');
-        let currentColor = document.getElementById('vignetteColor').value;
-
-        // Mostrar una frase aleatoria
-        document.getElementById('quoteDisplay').innerText = quotes[Math.floor(Math.random() * quotes.length)];
-
-        // Restaurar configuración del Vignette al cargar la página
-        const savedColor = localStorage.getItem('vignetteColor');
-        const savedIntensity = localStorage.getItem('vignetteIntensity') || 0.7;
-        const savedBgColor = localStorage.getItem('bgcolor') || '#ffcccb';
-
-        if (savedColor) {
-            document.getElementById('vignetteColor').value = savedColor;
-            currentColor = savedColor;
-        }
-        document.getElementById('vignetteIntensity').value = savedIntensity;
-        document.getElementById('bgcolor').value = savedBgColor;
-        document.body.style.backgroundColor = savedBgColor;
-        updateVignette();
-
-        // Event listeners para guardar las preferencias en localStorage
-        document.getElementById('vignetteColor').addEventListener('input', function() {
-            currentColor = this.value;
-            updateVignette();
-            localStorage.setItem('vignetteColor', currentColor);
-        });
-
-        document.getElementById('vignetteIntensity').addEventListener('input', function() {
-            const intensity = this.value;
-            updateVignette();
-            localStorage.setItem('vignetteIntensity', intensity);
-        });
-
-        document.getElementById('bgcolor').addEventListener('input', function() {
-            const bgcolor = this.value;
-            document.body.style.backgroundColor = bgcolor;
-            localStorage.setItem('bgcolor', bgcolor);
-        });
-
-        function updateVignette() {
-            const intensity = document.getElementById('vignetteIntensity').value;
-            vignette.style.background = `radial-gradient(circle, transparent, ${hexToRgba(currentColor, intensity)} 70%, ${hexToRgba(currentColor, intensity)})`;
-        }
-
-        function hexToRgba(hex, alpha) {
-            const r = parseInt(hex.slice(1, 3), 16);
-            const g = parseInt(hex.slice(3, 5), 16);
-            const b = parseInt(hex.slice(5, 7), 16);
-            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-        }
-
-        function searchGoogle() {
-            const query = document.getElementById('search').value;
-            window.location.href = `https://www.google.com/search?q=${query}`;
-        }
-
         function toggleMenu() {
-            const menu = document.getElementById('menu');
-            menu.classList.toggle('open-menu');
+            document.getElementById("menu").classList.toggle("open-menu");
+        }
+
+        function changeVignetteColor() {
+            var color = document.getElementById("vignetteColor").value;
+            var intensity = document.getElementById("vignetteIntensity").value;
+            document.getElementById("vignette").style.background = `radial-gradient(circle, transparent, ${color} ${70 - intensity * 70}%, ${color})`;
+        }
+
+        function changeVignetteIntensity() {
+            var color = document.getElementById("vignetteColor").value;
+            var intensity = document.getElementById("vignetteIntensity").value;
+            document.getElementById("vignette").style.background = `radial-gradient(circle, transparent, ${color} ${70 - intensity * 70}%, ${color})`;
+        }
+
+        function changeBgColor() {
+            var color = document.getElementById("bgcolor").value;
+            document.body.style.backgroundColor = color;
+        }
+
+        function search() {
+            var query = document.getElementById("search").value;
+            if (query) {
+                window.location.href = "https://www.google.com/search?q=" + encodeURIComponent(query);
+            }
+            return false;
         }
     </script>
 </body>
