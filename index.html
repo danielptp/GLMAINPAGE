@@ -141,11 +141,12 @@
 
         .search-bar {
             margin: 20px;
+            position: relative;
         }
 
         .search-bar input[type="text"] {
             width: 100%;
-            max-width: 300px;
+            max-width: 400px; /* Alargar la barra de búsqueda */
             height: 40px;
             padding: 10px;
             font-size: 16px;
@@ -160,7 +161,10 @@
         }
 
         .search-bar button {
-            height: 42px;
+            position: absolute;
+            top: 4px; /* Ajustar posición del botón */
+            right: 5px; 
+            height: 32px;
             padding: 0 20px;
             font-size: 16px;
             border: none;
@@ -168,7 +172,6 @@
             background-color: #ff6347;
             color: white;
             cursor: pointer;
-            margin-left: 10px;
         }
 
         .favorites {
@@ -304,7 +307,6 @@
     <div class="vignette"></div>
 
     <script>
-
         const quotes = [
             "La vida es lo que hacemos de ella.",
             "El amor es la respuesta, no importa la pregunta.",
@@ -381,7 +383,6 @@
             "La vida es un viaje, no un destino. Disfruta cada paso del camino"
         ];
 
-
         const vignette = document.querySelector('.vignette');
         let currentColor = document.getElementById('vignetteColor').value;
 
@@ -435,7 +436,7 @@
 
         function searchGoogle() {
             const query = document.getElementById('search').value;
-            window.open(`https://www.google.com/search?q=${query}`, '_blank');
+            window.location.href = `https://www.google.com/search?q=${query}`;
         }
 
         function toggleMenu() {
