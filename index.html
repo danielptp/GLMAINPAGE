@@ -327,17 +327,12 @@
 
         // Función para actualizar el Vignette con los valores actuales
         function updateVignette() {
-            const intensity = parseFloat(document.getElementById('vignetteIntensity').value);
-            const isMobile = window.innerWidth <= 768; // Verifica si es un dispositivo móvil
-            const adjustedIntensity = isMobile ? Math.max(intensity * 0.5, 0.1) : intensity; // Ajusta la intensidad, mínima 0.1 en móviles
-        
-            const vignetteColor = hexToRgba(currentColor, adjustedIntensity);
-        
-            vignette.style.background = `radial-gradient(circle, transparent, ${vignetteColor} 70%, ${vignetteColor})`;
+            const vignette = document.querySelector('.vignette');
+            const currentColor = document.getElementById('vignetteColor').value;
+            const intensity = document.getElementById('vignetteIntensity').value;
+
+            vignette.style.background = `radial-gradient(circle, transparent, ${hexToRgba(currentColor, intensity)} 70%, ${hexToRgba(currentColor, intensity)})`;
         }
-
-
-
 
         // Función para convertir hex a rgba
         function hexToRgba(hex, alpha) {
