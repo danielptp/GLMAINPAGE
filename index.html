@@ -142,16 +142,18 @@
         .search-bar {
             margin: 20px;
             position: relative;
+            display: flex; /* Utilizar Flexbox para alineación */
+            max-width: 500px; /* Ajustar según necesidad */
+            width: 100%;
         }
 
         .search-bar input[type="text"] {
-            width: 100%;
-            max-width: 400px; /* Alargar la barra de búsqueda */
+            flex: 1; /* Ocupa todo el espacio disponible */
             height: 40px;
             padding: 10px;
             font-size: 16px;
             border: 2px solid #ccc;
-            border-radius: 20px; /* Cambiar a borde redondeado */
+            border-radius: 20px 0 0 20px; /* Borde redondeado a la izquierda */
             outline: none;
             transition: border-color 0.3s;
         }
@@ -161,14 +163,12 @@
         }
 
         .search-bar button {
-            position: absolute;
-            top: 4px; /* Alinear correctamente con la barra de búsqueda */
-            right: -50px; /* Ajustar posición a la derecha */
-            height: 32px;
+            height: 40px;
             padding: 0 20px;
             font-size: 16px;
-            border: none;
-            border-radius: 4px;
+            border: 2px solid #ff6347;
+            border-left: none; /* Eliminar borde izquierdo para unir con el input */
+            border-radius: 0 20px 20px 0; /* Borde redondeado a la derecha */
             background-color: #ff6347;
             color: white;
             cursor: pointer;
@@ -238,8 +238,23 @@
 
         /* Estilos para asegurar la responsividad en dispositivos móviles */
         @media screen and (max-width: 600px) {
+            .search-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-bar input[type="text"], .search-bar button {
+                border-radius: 20px;
+            }
+
             .search-bar input[type="text"] {
-                width: 80%;
+                border-radius: 20px;
+                margin-bottom: 10px;
+            }
+
+            .search-bar button {
+                border-radius: 20px;
+                border-left: 2px solid #ff6347;
             }
 
             .favorites a {
