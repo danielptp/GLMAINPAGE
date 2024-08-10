@@ -145,7 +145,7 @@
 
         .search-bar input[type="text"] {
             width: 100%;
-            max-width: 300px;
+            max-width: 400px; /* Agrandando la barra de búsqueda */
             height: 40px;
             padding: 10px;
             font-size: 16px;
@@ -284,27 +284,57 @@
     </div>
     
     <div class="logo">
-        <img src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_160x56dp.png" alt="Google Logo">
+        <img src="https://www.pepsi.com/en-us/uploads/images/twil-can.png" alt="Logo" width="100">
     </div>
     
     <div class="search-bar">
-        <input type="text" id="search" placeholder="Busca en Google...">
-        <button onclick="searchGoogle()">Buscar</button>
+        <form id="searchForm" action="https://www.google.com/search" method="get" target="_blank">
+            <input type="text" name="q" placeholder="Buscar en Google..." required>
+            <button type="submit">Buscar</button>
+        </form>
     </div>
 
     <div class="favorites">
-        <a href="https://www.youtube.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/youtube-play.png" alt="YouTube">YouTube</a>
-         <a href="https://www.facebook.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/facebook.png" alt="Facebook">Facebook</a>
-         <a href="https://www.gmail.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/gmail-new.png" alt="Gmail">Gmail</a>
-         <a href="https://www.instagram.com" target="_blank"><img src="https://img.icons8.com/color/48/000000/instagram-new.png" alt="Instagram">Instagram</a>
-     </div>
+        <a href="https://www.google.com" target="_blank">
+            <img src="https://www.iconpacks.net/icons/2/free-google-icon-3101-thumb.png" alt="Google">
+            Google
+        </a>
+        <a href="https://mail.google.com" target="_blank">
+            <img src="https://www.iconpacks.net/icons/1/free-gmail-icon-1368-thumb.png" alt="Gmail">
+            Gmail
+        </a>
+        <a href="https://www.youtube.com" target="_blank">
+            <img src="https://www.iconpacks.net/icons/2/free-youtube-icon-3236-thumb.png" alt="YouTube">
+            YouTube
+        </a>
+    </div>
 
-    <div class="quote" id="quoteDisplay">Aquí va una frase inspiradora...</div>
+    <div class="quote" id="quote">
+        <!-- Aquí va la frase aleatoria del día -->
+    </div>
 
     <div class="vignette"></div>
 
     <script>
+        function toggleMenu() {
+            document.getElementById("menu").classList.toggle("open-menu");
+        }
 
+        // Cambio de color e intensidad del Vignette
+        document.getElementById("vignetteColor").addEventListener("input", function() {
+            document.querySelector(".vignette").style.background = `radial-gradient(circle, transparent, ${this.value} ${document.getElementById("vignetteIntensity").value * 100}%, ${this.value})`;
+        });
+
+        document.getElementById("vignetteIntensity").addEventListener("input", function() {
+            document.querySelector(".vignette").style.background = `radial-gradient(circle, transparent, ${document.getElementById("vignetteColor").value} ${this.value * 100}%, ${document.getElementById("vignetteColor").value})`;
+        });
+
+        // Cambio de color de fondo
+        document.getElementById("bgcolor").addEventListener("input", function() {
+            document.body.style.backgroundColor = this.value;
+        });
+
+        // Lista de frases
         const quotes = [
             "La vida es lo que hacemos de ella.",
             "El amor es la respuesta, no importa la pregunta.",
@@ -381,67 +411,14 @@
             "La vida es un viaje, no un destino. Disfruta cada paso del camino"
         ];
 
-
-        const vignette = document.querySelector('.vignette');
-        let currentColor = document.getElementById('vignetteColor').value;
-
         // Mostrar una frase aleatoria
-        document.getElementById('quoteDisplay').innerText = quotes[Math.floor(Math.random() * quotes.length)];
+        document.getElementById("quote").textContent = quotes[Math.floor(Math.random() * quotes.length)];
 
-        // Restaurar configuración del Vignette al cargar la página
-        const savedColor = localStorage.getItem('vignetteColor');
-        const savedIntensity = localStorage.getItem('vignetteIntensity') || 0.7;
-        const savedBgColor = localStorage.getItem('bgcolor') || '#ffcccb';
-
-        if (savedColor) {
-            document.getElementById('vignetteColor').value = savedColor;
-            currentColor = savedColor;
-        }
-        document.getElementById('vignetteIntensity').value = savedIntensity;
-        document.getElementById('bgcolor').value = savedBgColor;
-        document.body.style.backgroundColor = savedBgColor;
-        updateVignette();
-
-        // Event listeners para guardar las preferencias en localStorage
-        document.getElementById('vignetteColor').addEventListener('input', function() {
-            currentColor = this.value;
-            updateVignette();
-            localStorage.setItem('vignetteColor', currentColor);
+        // Permitir búsqueda al presionar "Enter"
+        document.getElementById("searchForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            window.open(`https://www.google.com/search?q=${encodeURIComponent(this.q.value)}`, "_blank");
         });
-
-        document.getElementById('vignetteIntensity').addEventListener('input', function() {
-            const intensity = this.value;
-            updateVignette();
-            localStorage.setItem('vignetteIntensity', intensity);
-        });
-
-        document.getElementById('bgcolor').addEventListener('input', function() {
-            const bgcolor = this.value;
-            document.body.style.backgroundColor = bgcolor;
-            localStorage.setItem('bgcolor', bgcolor);
-        });
-
-        function updateVignette() {
-            const intensity = document.getElementById('vignetteIntensity').value;
-            vignette.style.background = `radial-gradient(circle, transparent, ${hexToRgba(currentColor, intensity)} 70%, ${hexToRgba(currentColor, intensity)})`;
-        }
-
-        function hexToRgba(hex, alpha) {
-            const r = parseInt(hex.slice(1, 3), 16);
-            const g = parseInt(hex.slice(3, 5), 16);
-            const b = parseInt(hex.slice(5, 7), 16);
-            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-        }
-
-        function searchGoogle() {
-            const query = document.getElementById('search').value;
-            window.open(`https://www.google.com/search?q=${query}`, '_blank');
-        }
-
-        function toggleMenu() {
-            const menu = document.getElementById('menu');
-            menu.classList.toggle('open-menu');
-        }
     </script>
 </body>
 </html>
