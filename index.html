@@ -308,25 +308,57 @@
     <div class="vignette"></div>
 
     <script>
-        function toggleMenu() {
-            document.getElementById("menu").classList.toggle("open-menu");
+        // Función para restaurar el estado de los perfiles de color guardados en localStorage
+        function restoreSettings() {
+            const savedColor = localStorage.getItem('vignetteColor');
+            const savedIntensity = localStorage.getItem('vignetteIntensity') || 0.7;
+            const savedBgColor = localStorage.getItem('bgcolor') || '#ffcccb';
+
+            if (savedColor) {
+                document.getElementById('vignetteColor').value = savedColor;
+            }
+            document.getElementById('vignetteIntensity').value = savedIntensity;
+            document.getElementById('bgcolor').value = savedBgColor;
+
+            // Aplicar los valores restaurados
+            document.body.style.backgroundColor = savedBgColor;
+            updateVignette();
         }
 
-        // Cambio de color e intensidad del Vignette
-        document.getElementById("vignetteColor").addEventListener("input", function() {
-            document.querySelector(".vignette").style.background = `radial-gradient(circle, transparent, ${this.value} ${document.getElementById("vignetteIntensity").value * 100}%, ${this.value})`;
+        // Función para actualizar el Vignette con los valores actuales
+        function updateVignette() {
+            const vignette = document.querySelector('.vignette');
+            const currentColor = document.getElementById('vignetteColor').value;
+            const intensity = document.getElementById('vignetteIntensity').value;
+
+            vignette.style.background = `radial-gradient(circle, transparent, ${hexToRgba(currentColor, intensity)} 70%, ${hexToRgba(currentColor, intensity)})`;
+        }
+
+        // Función para convertir hex a rgba
+        function hexToRgba(hex, alpha) {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
+
+        // Guardar las configuraciones cuando se cambian
+        document.getElementById('vignetteColor').addEventListener('input', function() {
+            localStorage.setItem('vignetteColor', this.value);
+            updateVignette();
         });
 
-        document.getElementById("vignetteIntensity").addEventListener("input", function() {
-            document.querySelector(".vignette").style.background = `radial-gradient(circle, transparent, ${document.getElementById("vignetteColor").value} ${this.value * 100}%, ${document.getElementById("vignetteColor").value})`;
+        document.getElementById('vignetteIntensity').addEventListener('input', function() {
+            localStorage.setItem('vignetteIntensity', this.value);
+            updateVignette();
         });
 
-        // Cambio de color de fondo
-        document.getElementById("bgcolor").addEventListener("input", function() {
+        document.getElementById('bgcolor').addEventListener('input', function() {
+            localStorage.setItem('bgcolor', this.value);
             document.body.style.backgroundColor = this.value;
         });
 
-        // Lista de frases
+        // Mostrar una frase aleatoria
         const quotes = [
             "La vida es lo que hacemos de ella.",
             "El amor es la respuesta, no importa la pregunta.",
@@ -402,14 +434,15 @@
             "Tu esfuerzo y dedicación son la clave para alcanzar tus metas",
             "La vida es un viaje, no un destino. Disfruta cada paso del camino"
         ];
+        document.getElementById('quote').textContent = quotes[Math.floor(Math.random() * quotes.length)];
 
-        // Mostrar una frase aleatoria
-        document.getElementById("quote").textContent = quotes[Math.floor(Math.random() * quotes.length)];
+        // Restaurar configuración al cargar la página
+        window.onload = restoreSettings;
 
-        // Permitir búsqueda al presionar "Enter"
-        document.getElementById("searchForm").addEventListener("submit", function(event) {
-            // Permitir la búsqueda en la misma pestaña.
-        });
+        // Función para alternar el menú
+        function toggleMenu() {
+            document.getElementById('menu').classList.toggle("open-menu");
+        }
     </script>
 </body>
 </html>
