@@ -434,9 +434,11 @@
         }
 
         function searchGoogle() {
-            const query = document.getElementById('search').value;
-            window.open(`https://www.google.com/search?q=${query}`, '_blank');
-        }
+            var query = document.getElementById("search").value;
+            if (query) {
+                window.location.href = "https://www.google.com/search?q=" + encodeURIComponent(query);
+            }
+            return false;
 
         function toggleMenu() {
             const menu = document.getElementById('menu');
